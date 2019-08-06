@@ -1,0 +1,17 @@
+{
+  "name": "cubanmakers/monochrome",
+  "title": "Monochrome theme design for 3DCU",
+  "description": "Monochrome theme design for 3DCU",
+  "authors": [
+    {
+      "name": "Roberto Espi",
+      "email": "teratux@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "extra": {
+    "sylius-theme": {
+      "title": "Monochrome theme design for 3DCU"
+    }
+  }
+}

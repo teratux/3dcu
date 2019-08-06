@@ -1,0 +1,17 @@
+{
+  "name": "cubanmakers/blanktheme",
+  "title": "A blank theme for testing purposes",
+  "description": "A blank theme for testing purposes",
+  "authors": [
+    {
+      "name": "Roberto Espi",
+      "email": "teratux@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "extra": {
+    "sylius-theme": {
+      "title": "A blank theme for testing purposes"
+    }
+  }
+}

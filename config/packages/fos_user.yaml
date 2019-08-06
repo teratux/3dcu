@@ -1,0 +1,9 @@
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: App\Entity\User\ShopUser
+    from_email:
+        address: "teratux@gmail.com"
+        sender_name: "teratux@gmail.com"
+    group:
+        group_class: App\Entity\Customer\CustomerGroup

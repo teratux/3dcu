@@ -1,0 +1,87 @@
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en_US
+
+services:
+    # Default configuration for services in *this* file
+    _defaults:
+        # Automatically injects dependencies in your services
+        autowire: true
+
+        # Automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+
+        # Allows optimizing the container by removing unused services; this also means
+        # fetching services directly from the container via $container->get() won't work
+        public: false
+
+    # Makes classes in src/ available to be used as services;
+    # this creates a service per class whose id is the fully-qualified class name
+
+    Sonata\NewsBundle\Model\CommentManagerInterface:
+        alias: 'sonata.news.manager.comment'
+
+    Sonata\NewsBundle\Mailer\MailerInterface:
+        alias: 'sonata.news.mailer'
+
+    Sonata\NewsBundle\Model\BlogInterface:
+        alias: 'sonata.news.blog'
+
+    Sonata\NewsBundle\Model\PostManagerInterface:
+        alias: 'sonata.news.manager.post'
+
+    Application\:
+        autowire: true
+        autoconfigure: true
+        resource: '../src/Application/*'
+        # exclude: '../src/Application/Sonata/NewsBundle/{Admin,Controller,Entity,Migrations,Tests,Kernel.php}'
+
+    Application\Sonata\NewsBundle\Action\CommentListAction:
+        # class: "Application\Sonata\NewsBundle\Action\CommentListAction"
+        public: "true"
+        tags: ['controller.service_arguments']
+        calls:
+            - [setContainer, ['@service_container']]
+
+    App\:
+        autowire: true
+        autoconfigure: true
+        public: true
+        resource: '../src/*'
+        exclude: '../src/{Application,Entity,Migrations,Tests,Kernel.php}'
+
+    # Controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    admin.post:
+        class: Application\Sonata\NewsBundle\Admin\PostAdmin
+        arguments: [~, Application\Sonata\NewsBundle\Entity\Post, Application\Sonata\NewsBundle\Controller\PostAdminController]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Post }
+        public: true
+
+    admin.media:
+        class: Application\Sonata\NewsBundle\Admin\MediaAdmin
+        arguments: [~, Application\Sonata\MediaBundle\Entity\Media, Application\Sonata\NewsBundle\Controller\MediaAdminController]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Media }
+        public: true
+
+    main_service:
+        class:        App\Services\MainService
+        public:       true
+
+    app.controller.maincontroller:
+        class:        App\Controller\MainController
+
+    App\Controller\Admin\AdminUserController:
+        autowire: false
+
+    app.listener.admin.menu_builder:
+        class: App\Menu\AdminMenuListener
+        tags:
+            - { name: kernel.event_listener, event: sylius.menu.admin.main, method: addAdminMenuItems }

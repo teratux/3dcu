@@ -1,0 +1,52 @@
+<nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+    <div class="container">
+        {% include '@SyliusShop/Common/nav_logo.html.twig' with {
+            'url' : path("sylius_shop_homepage")
+        }%}
+        <div
+            class="collapse navbar-collapse" id="navcol-1">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item" role="presentation">
+				    <h2 id="locale_reveal" class="content__title content__title--medium block-revealer" style="position: relative;">
+                        <div class="block-revealer__content" style="opacity: 1;">{{ render(url('sylius_shop_available_locales')) }}</div>
+                        <div class="block-revealer__element"></div>
+                    </h2>
+                </li>
+                <li class="nav-item" role="presentation" ><a id="locale_trigger" class="nav-link" ><img src="{{ asset('bundles/syliusshop/img/global.svg') }}" title="{{ 'sylius.ui.locale' | trans }} "></a></li>
+
+                <li class="nav-item" role="presentation"><a class="nav-link active" href="{{ path("sylius_shop_homepage") }}">INICIO</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link active" href="{{ path('sonata_news_home') }}">BLOG</a></li>
+                {# <li class="nav-item" role="presentation"><a class="nav-link" href="gallery.html">{{ "gallery" | trans }}</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="faq.html">FAQ</a></li> #}
+                {# <li class="nav-item" role="presentation"><a class="nav-link" href="about-us.html">NOSOTROS</a></li> #}
+                {# <li class="nav-item" role="presentation"><a class="nav-link" href="contact-us.html">CONTACTO</a></li> #}
+                {% if app.user is null %}
+                <li class="nav-item" role="presentation" style="width: 41px;"><a class="nav-link" href="{{ path('sylius_shop_login') }}"><img src="{{ asset('bundles/syliusshop/img/user.svg') }}" title="{{ 'sylius.ui.login' | trans }} "></a></li>
+                <li class="nav-item" role="presentation" style="width: 42px;"><a class="nav-link" href="{{ path('sylius_shop_register') }}"><img src="{{ asset('bundles/syliusshop/img/add-user.svg' ) }}" title="{{ 'sylius.ui.register' | trans }}"></a></li>
+                {% else %}
+                <div class="nav-link">
+                    [ {{ app.user }} ]
+                </div>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+    var locate_reveal = new RevealFx(document.querySelector('#locale_reveal')),
+        locale_trigger = document.getElementById('locale_trigger');
+
+    function handleClick() {
+        locate_reveal.reveal({
+            bgcolor: '#3F3F3F',
+            duration: 300,
+            direction: 'rl',
+            onStart: function(contentEl, revealerEl) { contentEl.style.opacity = 0; },
+            onCover: function(contentEl, revealerEl) { contentEl.style.opacity = 1; }
+        });
+        locale_trigger.removeEventListener('click', handleClick, false );
+    }
+    
+    locale_trigger.addEventListener('click', handleClick );
+</script>
