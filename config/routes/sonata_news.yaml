@@ -1,3 +1,0 @@
-sonata_news:
-    resource: '@ApplicationSonataNewsBundle/Resources/config/routing/news.xml'
-    prefix: /news
